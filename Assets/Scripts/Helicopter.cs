@@ -11,11 +11,14 @@ public class Helicopter : MonoBehaviour {
 	private bool xLandungErreicht = false;
 	private bool yLandungErreicht = false;
 	private bool zLandungErreicht = false;
-	private Player player;
+    private bool LandungErreicht = false;
+    private Player player;
 	private Animator anim;
+    private float yPosLandingAreaPlusPlatz;
+    private bool landeplatzErreicht;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		rigidbody = GetComponent<Rigidbody>();
 		player = FindObjectOfType<Player>();
 		anim = GetComponent<Animator>();
@@ -35,6 +38,11 @@ public class Helicopter : MonoBehaviour {
 			Landung();
 		}
 
+        if (landeplatzErreicht && transform.position.y <= yPosLandingAreaPlusPlatz)
+        {
+            rigidbody.velocity = Vector3.zero;
+        }
+
 
 	}
 
@@ -46,8 +54,8 @@ public class Helicopter : MonoBehaviour {
 	}
 
 	public void Landung() {
-		float yPosLandingAreaPlusMeter = player.landingAreaYPosition+1f;
-		bool LandungErreicht = false;
+        yPosLandingAreaPlusPlatz = player.landingAreaYPosition + 0.5f;
+        landeplatzErreicht = true;
 
 			rigidbody.velocity = new Vector3(0f,-10f,0f);
 			Debug.Log("Landung erreicht von Heli");
